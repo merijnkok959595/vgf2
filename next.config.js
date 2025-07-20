@@ -4,4 +4,4 @@ const nextConfig = {
     appDir: false
   }
 };
-module.exports = nextConfig; 
+module.exports = {}; 

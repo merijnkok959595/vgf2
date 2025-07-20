@@ -1,0 +1,1 @@
+export default function handler(req, res) { res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString(), app: 'voice-ai-marketplace', database: process.env.DATABASE_URL ? 'configured' : 'not configured' }); }

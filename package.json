@@ -10,7 +10,16 @@
     "react-dom": "^18.2.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
-    "stripe": "^14.0.0"
+    "stripe": "^14.0.0",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
+    "framer-motion": "^10.16.4",
+    "react-hot-toast": "^2.4.1",
+    "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
+    "react-hook-form": "^7.47.0",
+    "zod": "^3.22.4",
+    "@hookform/resolvers": "^3.3.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.5",

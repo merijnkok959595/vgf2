@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  name        String?
+  tokens      Int      @default(500) // Free trial tokens
+  totalSpent  Float    @default(0)
+  createdAt   DateTime @default(now())
+  
+  sessions    VoiceSession[]
+  transactions TokenTransaction[]
+  referrals   Referral[]
+  reviews     Review[]
+}
+
+model Agent {
+  id          String @id
+  name        String
+  role        String
+  personality String
+  specialization String
+  price       Int    // tokens per minute
+  avatar      String
+  humeModel   String
+  active      Boolean @default(true)
+  description String
+  voiceStyle  String
+  
+  sessions    VoiceSession[]
+  reviews     Review[]
+}
+
+model VoiceSession {
+  id          String   @id @default(cuid())
+  userId      String
+  agentId     String
+  duration    Int      // seconds
+  tokensUsed  Int
+  quality     Int?     // 1-5 rating
+  transcript  Json?
+  emotions    Json?    // Hume AI emotion data
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id])
+  agent Agent @relation(fields: [agentId], references: [id])
+}
+
+model TokenTransaction {
+  id          String   @id @default(cuid())
+  userId      String
+  amount      Int
+  type        TransactionType
+  packageId   String?
+  stripePaymentId String?
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  userId      String
+  agentId     String
+  rating      Int      // 1-5
+  comment     String?
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id])
+  agent Agent @relation(fields: [agentId], references: [id])
+}
+
+model Referral {
+  id          String   @id @default(cuid())
+  referrerId  String
+  referredEmail String
+  bonusPaid   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [referrerId], references: [id])
+}
+
+enum TransactionType {
+  PURCHASE
+  USAGE
+  BONUS
+  REFUND
+} 
